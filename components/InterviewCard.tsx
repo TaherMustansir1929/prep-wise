@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
 import { getRandomInterviewCover } from "@/lib/utils";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import DisplayTechIcons from "@/components/DisplayTechIcons";
 import { getFeedbackByInterviewId } from "@/lib/actions/general.action";
+import AnimatedCardWrapper from "./AnimatedCardWrapper";
+import ButtonWithLoading from "./ButtonWithLoading";
 
 const InterviewCard = async ({
   id,
@@ -24,7 +24,7 @@ const InterviewCard = async ({
     feedback?.createdAt || createdAt || Date.now()
   ).format("MMM D, YYYY");
 
-  return (
+  const cardContent = (
     <div className={"card-border w-[360px] max-sm:w-full min-h-96"}>
       <div className={"card-interview"}>
         <div>
@@ -72,16 +72,16 @@ const InterviewCard = async ({
         <div className={"flex flex-row justify-between"}>
           <DisplayTechIcons techStack={techstack} />
 
-          <Button className={"btn-primary"}>
-            <Link
-              href={feedback ? `/interview/${id}/feedback` : `/interview/${id}`}
-            >
-              {feedback ? "Check Feedback" : "Take Interview"}
-            </Link>
-          </Button>
+          <ButtonWithLoading 
+            href={feedback ? `/interview/${id}/feedback` : `/interview/${id}`}
+            label={feedback ? "Check Feedback" : "Take Interview"}
+          />
         </div>
       </div>
     </div>
   );
+
+  return <AnimatedCardWrapper>{cardContent}</AnimatedCardWrapper>;
 };
+
 export default InterviewCard;
